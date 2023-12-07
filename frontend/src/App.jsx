@@ -6,6 +6,9 @@ import {
   Route,
   Link
 } from 'react-router-dom';
+import Home from './components/Home/Home.jsx';
+import Login from  './components/Login/Login.jsx';
+
 
 function App() {
   const [count, setCount] = useState(0)
@@ -14,22 +17,20 @@ function App() {
       <Router>
         <nav>
           <Link to="/">Home</Link> | 
-          <Link to="/about">About</Link>
+          
+          <Link to="/login">Login</Link> 
         </nav>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
+         
+          <Route path="/login" element={<Login />} />
         </Routes>
       </Router>
     );
   }
   
-  function Home() {
-    return <h2>Home Page</h2>;
-  }
+
   
-  function About() {
-    return <h2>About Page</h2>;
-  }
+
 
 export default App

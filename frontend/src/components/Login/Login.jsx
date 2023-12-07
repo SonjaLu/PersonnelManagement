@@ -1,4 +1,27 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './Login.css';
 
+function Login() {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const navigate = useNavigate();
+
+    const handleUsernameChange = (e) => {
+        setUsername(e.target.value);
+    };
+
+    const handlePasswordChange = (e) => {
+        setPassword(e.target.value);
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+     
+        localStorage.setItem('user', username);
+        
+        navigate('/home'); 
+    };
 
 return (
     <div className="login-box">
@@ -24,3 +47,7 @@ return (
         <input className="login-submit" type="submit" value="login" />
     </div>
     </div>
+        );
+    }
+    
+    export default Login;
