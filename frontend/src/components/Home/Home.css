@@ -18,6 +18,10 @@ body {
     text-align: center;
     justify-content: center;
     padding-left: 100px;
+    font-weight: 700;
+    text-shadow: 
+        -2px 14px 8px #004466; 
+       
 }
 
 .home-letters-bottom {

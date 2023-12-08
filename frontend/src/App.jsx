@@ -1,36 +1,47 @@
-import { useState } from 'react'
-import './App.css'
+import { useState, useEffect } from 'react';
+import './App.css';
 import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Link
+  Link,
+  useLocation
 } from 'react-router-dom';
 import Home from './components/Home/Home.jsx';
-import Login from  './components/Login/Login.jsx';
+import Login from './components/Login/Login.jsx';
+import Register from './components/Register/Register.jsx';
+import ForgotPassword from './components/Register/ForgotPassword.jsx';
 
+function Navigation() {
+    const location = useLocation();
+    const [isHome, setIsHome] = useState(false);
+
+    useEffect(() => {
+        setIsHome(location.pathname === '/');
+    }, [location]);
+
+    return (
+        <div className={isHome ? 'hide-links' : ''}>
+            <nav>
+                <Link to="/">Home</Link> | 
+                <Link to="/login">Login</Link> 
+            </nav>
+        </div>
+    );
+}
 
 function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-      <Router>
-        <nav>
-          <Link to="/">Home</Link> | 
-          
-          <Link to="/login">Login</Link> 
-        </nav>
-        <Routes>
-          <Route path="/" element={<Home />} />
-         
-          <Route path="/login" element={<Login />} />
-        </Routes>
-      </Router>
+    return (
+        <Router>
+            <Navigation />
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/forgotpassword" element={<ForgotPassword />} />
+            </Routes>
+        </Router>
     );
-  }
-  
+}
 
-  
-
-
-export default App
+export default App;

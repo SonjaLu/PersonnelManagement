@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import './Login.css';
 
 function Login() {
@@ -41,8 +41,8 @@ return (
         </div>
         
         <div className="login-links">
-            <a href="#">Forgot Password?</a>
-            <a href="#">Don't have an account? Sign Up</a>
+        <Link to="/forgotpassword">Forgot Password?</Link>
+            <Link to="/register">Don't have an account? Sign Up</Link>
         </div>
         <input className="login-submit" type="submit" value="login" />
     </div>
