@@ -11,6 +11,9 @@ import Home from './components/Home/Home.jsx';
 import Login from './components/Login/Login.jsx';
 import Register from './components/Register/Register.jsx';
 import ForgotPassword from './components/Register/ForgotPassword.jsx';
+import QuoteComponent from './components/Motivation/Motivation.jsx';
+import StaffSelector from './components/Staff/SelectStaff.jsx';
+import WorkflowStaff from './components/Staff/WorkflowStaff.jsx';
 
 function Navigation() {
     const location = useLocation();
@@ -39,6 +42,9 @@ function App() {
                 <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/forgotpassword" element={<ForgotPassword />} />
+                <Route path="/quotes" element={<QuoteComponent />} />
+                <Route path="/selectstaff" element={<StaffSelector />} />
+                <Route path="/workflowstaff/:staffName" element={<WorkflowStaff />} />
             </Routes>
         </Router>
     );

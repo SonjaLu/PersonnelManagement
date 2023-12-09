@@ -10,8 +10,8 @@ function Home() {
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            navigate('/login');
-        }, 7000); 
+            navigate('/quotes');
+        }, 5000); 
     
         return () => clearTimeout(timer); 
     }, [navigate]);
