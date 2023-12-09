@@ -9,12 +9,11 @@ function Register() {
     const navigate = useNavigate();
 
     const handleRegister = () => {
-       
-        localStorage.setItem('username', username);
-        localStorage.setItem('password', password); 
+        const existingUsers = JSON.parse(localStorage.getItem('users')) || {};
+        existingUsers[username] = password;
+        localStorage.setItem('users', JSON.stringify(existingUsers));
 
-       
-        navigate('/home');
+        navigate('/login');
     }
 
     return (
