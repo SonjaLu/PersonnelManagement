@@ -4,7 +4,7 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Link,
+
   useLocation
 } from 'react-router-dom';
 import Home from './components/Home/Home.jsx';
@@ -24,10 +24,9 @@ function Navigation() {
     }, [location]);
 
     return (
-        <div className={isHome ? 'hide-links' : ''}>
+        <div>
             <nav>
-                <Link to="/">Home</Link> | 
-                <Link to="/login">Login</Link> 
+               
             </nav>
         </div>
     );
