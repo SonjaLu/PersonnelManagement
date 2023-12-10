@@ -1,0 +1,21 @@
+.waves {
+    width: 720px;
+    height: 357px;
+    opacity: 0.5;
+    position: absolute;
+    z-index: 1;
+    top: 50px;
+}
+
+.wrapper {
+    width: 700px;
+    height: 350px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    font-size: 30px;
+    z-index: 2;
+    top: -220px;
+    align-items: center;
+}

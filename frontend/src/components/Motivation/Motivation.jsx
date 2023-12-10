@@ -32,7 +32,7 @@ function QuoteComponent() {
   return (
     <div className="card">
         <div className="face1">
-          <h3>Du schaffst das</h3> 
+          <h3>Du schaffst das !</h3> 
           </div>
         
           <div className="face2">
