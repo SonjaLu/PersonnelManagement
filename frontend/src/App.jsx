@@ -14,6 +14,10 @@ import ForgotPassword from './components/Register/ForgotPassword.jsx';
 import QuoteComponent from './components/Motivation/Motivation.jsx';
 import StaffSelector from './components/Staff/SelectStaff.jsx';
 import WorkflowStaff from './components/Staff/WorkflowStaff.jsx';
+import Vacation from './components/Staff/Vacation.jsx';
+import Sickdays from './components/Staff/Sickdays.jsx';
+import RTdays from './components/Staff/RTdays.jsx';
+import { StaffProvider } from './components/Staff/StaffProvider.jsx';
 
 function Navigation() {
     const location = useLocation();
@@ -33,7 +37,11 @@ function Navigation() {
 }
 
 function App() {
+    const [staffList, setStaffList] = useState([
+        // ... Ihre Mitarbeiterdaten ...
+      ]);
     return (
+        <StaffProvider>
         <Router>
             <Navigation />
             <Routes>
@@ -44,8 +52,12 @@ function App() {
                 <Route path="/quotes" element={<QuoteComponent />} />
                 <Route path="/selectstaff" element={<StaffSelector />} />
                 <Route path="/workflowstaff/:staffName" element={<WorkflowStaff />} />
+                <Route path="/vacation/:staffName" element={<Vacation />} />
+    <Route path="/sickdays/:staffName" element={<Sickdays />} />
+    <Route path="/rtdays/:staffName" element={<RTdays />} />
             </Routes>
         </Router>
+        </StaffProvider>
     );
 }
 
