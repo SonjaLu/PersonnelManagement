@@ -2,13 +2,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './SelectStaff.css';
+import { useStaff } from './StaffProvider.jsx';
+import UpdateStaff from './UpdateStaff.jsx';
 
 function StaffSelector() {
-  const [staffList, setStaffList] = useState([
-    { name: 'Kunigunde', vacationEntitlement: 30, vacationTaken: 20, vacationPlanned: 23, sickDays: 2, rtDays: 2, plannedRtDays: 2, takenRtDays: 1 },
-    { name: 'Hildegard', vacationEntitlement: 30, vacationTaken: 16, vacationPlanned: 20, sickDays: 20, rtDays: 2, plannedRtDays: 1, takenRtDays: 1 },
-  ]);
-    const [selectedStaff, setSelectedStaff] = useState('');
+  const { staffList, setStaffList } = useStaff();
+  const [selectedStaff, setSelectedStaff] = useState('');
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [showUpdatePopup, setShowUpdatePopup] = useState(false);
   const [newStaffName, setNewStaffName] = useState({
     name: '',
     vacationEntitlement: '',
@@ -28,7 +29,36 @@ function StaffSelector() {
 
   const handleSelectChange = (event) => {
     setSelectedStaff(event.target.value);
+    const selected = staffList.find(staff => staff.name === event.target.value);
+    if (selected) {
+      setNewStaffName(selected);
+    }
   };
+
+  const handleShowUpdatePopup = () => {
+    if (selectedStaff) {
+    setShowUpdatePopup(true);
+  }};
+
+  const handleUpdateSave = (updatedData) => {
+    const updatedList = staffList.map(staff => 
+      staff.name === selectedStaff ? updatedData : staff
+    );
+    setStaffList(updatedList);
+    setShowUpdatePopup(false);
+    
+    setNewStaffName({
+      name: '',
+      vacationEntitlement: '',
+      vacationTaken: '',
+      vacationPlanned: '',
+      sickDays: '',
+      rtDays: '',
+      plannedRtDays: '',
+      takenRtDays: ''
+    });
+  };
+
 
   const handleAddStaff = () => {
     const isNameExists = staffList.some(staff => staff.name === newStaffName.name);
@@ -52,6 +82,25 @@ function StaffSelector() {
     }
   };
 
+  const handleUpdateStaff = () => {
+    const updatedList = staffList.map(staff => 
+      staff.name === selectedStaff ? newStaffName : staff
+    );
+    setStaffList(updatedList);
+    setSelectedStaff('');
+    setNewStaffName({
+      name: '',
+      vacationEntitlement: '',
+      vacationTaken: '',
+      vacationPlanned: '',
+      sickDays: '',
+      rtDays: '',
+      plannedRtDays: '',
+      takenRtDays: ''
+    });
+    setIsEditMode(false);
+  };
+
   const handleDeleteStaff = () => {
     if (selectedStaff && window.confirm(`Möchten Sie wirklich ${selectedStaff} löschen?`)) {
       setStaffList(staffList.filter(staff => staff.name !== selectedStaff));
@@ -68,9 +117,27 @@ function StaffSelector() {
       ))}
     </select>
 
-    <button onClick={handleNavigate} disabled={!selectedStaff}>Weiter zu Mitarbeiter</button>
-    <button onClick={handleDeleteStaff} disabled={!selectedStaff}>Mitarbeiter Löschen</button>
-      <div>
+    <button className="glow-on-hover" onClick={handleNavigate} disabled={!selectedStaff}>Weiter</button>
+    
+<button className="glow-on-hover" onClick={handleShowUpdatePopup} disabled={!selectedStaff}>
+  Aktualisieren
+</button>
+
+{showUpdatePopup && (
+   <div className={`popup-overlay ${showUpdatePopup ? 'active' : ''}`}>
+  <UpdateStaff
+    staff={staffList.find(staff => staff.name === selectedStaff)}
+    onSave={handleUpdateSave}
+    onCancel={() => setShowUpdatePopup(false)}
+  />
+   </div>
+  )}
+
+    <button className="glow-on-hover" onClick={handleDeleteStaff} disabled={!selectedStaff}>Löschen</button>
+     
+   
+
+      <div className="staffdata">
   <input
     type="text"
     value={newStaffName.name}
