@@ -19,6 +19,7 @@ import Sickdays from './components/Staff/Sickdays.jsx';
 import RTdays from './components/Staff/RTdays.jsx';
 import { StaffProvider } from './components/Staff/StaffProvider.jsx';
 
+
 function Navigation() {
     const location = useLocation();
     const [isHome, setIsHome] = useState(false);
@@ -37,11 +38,10 @@ function Navigation() {
 }
 
 function App() {
-    const [staffList, setStaffList] = useState([
-        // ... Ihre Mitarbeiterdaten ...
-      ]);
+   
     return (
         <StaffProvider>
+            
         <Router>
             <Navigation />
             <Routes>

@@ -1,0 +1,61 @@
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   
+    z-index: 10;
+  }
+  
+  .popup-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .popup-container {
+    background: linear-gradient(0deg, rgba(149,69,195,1) 0%, rgba(95,197,187,1) 9%, rgba(154,121,198,1) 18%, rgba(72,201,200,1) 30%, rgba(83,89,203,1) 40%, rgba(94,205,204,1) 49%, rgba(106,139,207,1) 59%, rgba(143,88,210,1) 71%, rgba(222,66,213,1) 86%, rgba(253,45,87,1) 100%);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+    
+  }
+
+  .staffdatapopup {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    
+    
+}
+
+.staffdatapopup input {
+    width: 100%;
+    height: 40px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    font-size: 20px;
+    padding: 5px;
+    background: transparent;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.formpopup {
+top:-100px;
+position: relative;
+}
+
+.popupbtn {
+    margin-top: 15px;
+}
