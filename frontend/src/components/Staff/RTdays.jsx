@@ -21,7 +21,7 @@ function RtDays() {
   const rtDaysData = getRtDaysData();
 
   return (
-    <div>
+    <div className="rtdiv">
       <h2>RT-Tage für {staffName}</h2>
       <p>Maximale RT-Tage: {rtDaysData.maxRtDays} Tage</p>
       <p>Geplante RT-Tage: {rtDaysData.plannedRtDays} Tage</p>
