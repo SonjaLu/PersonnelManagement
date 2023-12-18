@@ -31,15 +31,35 @@ function SickDays() {
   };
 
   return (
+    <>
+    <h2 className="sickdays-headline">Krankheitstage<br></br> für {staffName}</h2>
+    <div className="sickdays-wrapper">
+       
     <div className="sickdays-container">
-      <h2>Krankheitstage für {staffName}</h2>
-      <input
+      
+      <input className="sickdays-input"
         type="number"
         value={sickDays}
         onChange={handleSickDaysChange}
       />
       <button className="save-button" onClick={handleSave}>Speichern</button>
     </div>
+    <div className="loop-wrapper">
+    <div className="mountain"></div>
+    <div className="hill"></div>
+    <div className="tree"></div>
+    <div className="tree"></div>
+    <div className="tree"></div>
+    <div className="rock"></div>
+    <div class="truck-wrapper">
+    <div class="truck"></div>
+    <div className="wheels"></div>
+    <div class="red-cross"></div>
+    
+    </div>
+  </div>
+  </div>  
+  </>
   );
 }
 
