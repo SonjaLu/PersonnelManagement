@@ -123,8 +123,8 @@
     width: 50px;
     bottom: 0;
 
-    /* background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/130015/tree.svg) no-repeat; */
-    background: url('./assets/tree1.svg') no-repeat; 
+    background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/130015/tree.svg) no-repeat;
+    /* background: url('./assets/tree1.svg') no-repeat;  */
     background-size: cover;
 }
   .rock {

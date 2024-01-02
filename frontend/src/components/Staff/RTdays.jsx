@@ -21,14 +21,29 @@ function RtDays() {
   const rtDaysData = getRtDaysData();
 
   return (
+  <div className="wrapdiv">
     <div className="rtdiv">
-      <h2>RT-Tage für {staffName}</h2>
+      <h2 className="rth2">RT-Tage für {staffName}</h2><br></br>
       <p>Maximale RT-Tage: {rtDaysData.maxRtDays} Tage</p>
       <p>Geplante RT-Tage: {rtDaysData.plannedRtDays} Tage</p>
       <p>Genommene RT-Tage: {rtDaysData.takenRtDays} Tage</p>
-
-      {/* Kalenderkomponente hier einfügen */}
     </div>
+<div className="jumpbox">
+  <ul>
+    <li>
+    </li>
+    <li>
+  
+    </li>
+    <li>
+    </li>
+    <li></li>
+    <li></li>
+  </ul>
+</div>
+    </div>
+
+
   );
 }
 
