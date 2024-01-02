@@ -1,3 +1,88 @@
+.wrapdiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+    animation: bgchange 20s infinite;
+}
+
 .rtdiv {
     color: white;
+    margin-bottom: 50px;
+	font-size: 26px;
 }
+
+.rth2 {
+	font-size: 50px;
+	font-weight: 700;
+	margin-bottom: 20px;
+	letter-spacing: 2px;
+}
+.jumpbox {
+	height: 50vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	
+    animation: bgchange 20s infinite;
+}
+
+ul {
+	margin: 0;
+	padding: 0;
+	display: flex;
+	border-bottom: solid 10px white;
+}
+
+ul li {
+	list-style: none;
+	width: 30px;
+	height: 30px;
+	background-color: white;
+	margin: 0 10px;
+	border-radius: 50%;
+	animation: jumping 0.8s linear infinite;
+}
+
+@keyframes jumping {
+	0% { transform: translateY(0); }
+	50% { transform: translateY(-150px); }
+	100% { transform: translateY(0); }
+}
+
+ul li:nth-child(1) {
+	animation-delay: 0.45s;
+}
+
+ul li:nth-child(2) {
+	animation-delay: 0.6s;
+}
+
+ul li:nth-child(3) {
+	animation-delay: 0.3s;
+}
+
+ul li:nth-child(4) {
+	animation-delay: 0;
+}
+
+ul li:nth-child(5) {
+	animation-delay: 0.1s;
+}
+
+@keyframes bgchange {
+	0% { background-color: #272727 }
+
+	20% { background-color: blue }
+
+	40% { background-color: tomato }
+
+	60% { background-color: lightblue }
+
+	80% { background-color: darkgreen }
+
+	100% { background-color: #272727 }
+}
+  
