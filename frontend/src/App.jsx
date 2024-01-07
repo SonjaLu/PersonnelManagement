@@ -18,7 +18,7 @@ import Vacation from './components/Staff/Vacation.jsx';
 import Sickdays from './components/Staff/Sickdays.jsx';
 import RTdays from './components/Staff/RTdays.jsx';
 import { StaffProvider } from './components/Staff/StaffProvider.jsx';
-
+import MyCalendarComponent from './components/Calendar/Calendar.jsx';
 
 function Navigation() {
     const location = useLocation();
@@ -55,6 +55,7 @@ function App() {
                 <Route path="/vacation/:staffName" element={<Vacation />} />
     <Route path="/sickdays/:staffName" element={<Sickdays />} />
     <Route path="/rtdays/:staffName" element={<RTdays />} />
+    <Route path="/calendar" element={<MyCalendarComponent />} />
             </Routes>
         </Router>
         </StaffProvider>
