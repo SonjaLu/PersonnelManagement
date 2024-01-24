@@ -59,6 +59,9 @@ function SickDays() {
     </div>
   </div>
   </div>  
+  {/* <div>
+       <button id="calender-button" onClick={handleOpenCalendar}>Kalender öffnen</button>
+     </div> */}
   </>
   );
 }

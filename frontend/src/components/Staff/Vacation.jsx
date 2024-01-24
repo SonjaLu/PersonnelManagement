@@ -40,7 +40,12 @@ function Vacation() {
       </div>
       {/* Kalenderkomponente hier einfügen */}
     </div>
-  );
-}
+    );
+ };
+  
+    //    <div>
+    //    <button id="calender-button" onClick={handleOpenCalendar}>Kalender öffnen</button>
+    //  </div>
+
 
 export default Vacation;

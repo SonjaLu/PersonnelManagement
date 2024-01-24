@@ -1,5 +1,118 @@
 .calendar-container {
-    width: 80%;      
-    height: 60%;    
-    padding: 20px;    
+    width: 90%;      
+    height: 70%;    
+    padding: 20px;  
+    flex-wrap: wrap;  
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    align-content: center;
+    display: flex;
+    
+  }
+
+  .single-calendar {
+    width: 30%;
+    height: 30%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    border-radius: 5%;
+    margin-bottom: 10px;
+  }
+
+  .single-calendar h3 {
+    text-align: center;
+    margin-top: 0;
+    padding: 4px;
+font-size: 20px;
+  }
+
+  .rbc-header {
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+  }
+
+  .rbc-month-view {
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+  }
+
+  .rbc-today {
+    background-color: pink !important;
+  }
+
+  .calendar-legend {
+    margin: 20px auto;
+    text-align: center;
+    width: 90%;
+   clear: both;
+   display: flex;
+   justify-content: space-evenly;
+   font-size: 20px;
+  }
+
+  .calendar-legend .legend-item {
+    display: inline-block;
+    margin-right: 10px;
+    color: darkgray;
+  }
+   
+  #sick-btn, #vacation-btn, #rt-btn {
+    background-color: transparent;
+    box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.75);
+  }
+  .calendar-legend .sickness-day:before {
+    content: ' ';
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    background-color: yellow;
+    margin-right: 5px;
+  }
+  
+  .calendar-legend .vacation-day:before {
+    content: ' ';
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    background-color: green;
+    margin-right: 5px;
+  }
+  
+  .calendar-legend .rt-day:before {
+    content: ' ';
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    background-color: white;
+    margin-right: 5px;
+  }
+
+  .rbc-off-range{
+    visibility: hidden;
+    background-color: #333333;
+  }
+  .rbc-off-range-bg{
+    
+    background-color: #333333;
+    
+  }
+  .rbc-calendar .rbc-month-view .rbc-row-bg {
+    border-radius: 0 0 8px 8px !important;
+  }
+
+  .rbc-month-row {
+    text-align: center;
+    justify-content: center;
+    
+  }
+
+  #save-btn {
+    border-radius: 0 0 8px 8px !important;
   }

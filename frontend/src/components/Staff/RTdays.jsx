@@ -41,6 +41,9 @@ function RtDays() {
     <li></li>
   </ul>
 </div>
+<div>
+       <button id="calender-button" onClick={handleOpenCalendar}>Kalender öffnen</button>
+     </div>
     </div>
 
 
