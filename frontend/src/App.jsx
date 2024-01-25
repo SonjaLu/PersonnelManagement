@@ -19,6 +19,7 @@ import Sickdays from './components/Staff/Sickdays.jsx';
 import RTdays from './components/Staff/RTdays.jsx';
 import { StaffProvider } from './components/Staff/StaffProvider.jsx';
 import FullYearCalendar from './components/Calendar/Calendar.jsx';
+import ParentComponent from './components/Staff/ParentComponent.jsx';
 
 function Navigation() {
     const location = useLocation();
@@ -54,8 +55,9 @@ function App() {
                 <Route path="/workflowstaff/:staffName" element={<WorkflowStaff />} />
                 <Route path="/vacation/:staffName" element={<Vacation />} />
     <Route path="/sickdays/:staffName" element={<Sickdays />} />
-    <Route path="/rtdays/:staffName" element={<RTdays />} />
+    <Route path="/rtdays/:staffName" element={<ParentComponent />} />
     <Route path="/calendar" element={<FullYearCalendar />} />
+    <Route path="/ParentComponent" element={<ParentComponent />} />
             </Routes>
         </Router>
         </StaffProvider>

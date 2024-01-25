@@ -4,13 +4,18 @@ import './RtDays.css';
 import { StaffContext } from './StaffProvider.jsx';
 import { useContext } from 'react';
 
-function RtDays() {
+
+
+function RtDays({ onOpenCalendar}) {
     const { staffName } = useParams();
     const { staffList } = useContext(StaffContext);
+
+
   const getRtDaysData = () => {
     const staff = staffList.find(s => s.name === staffName);
     if (!staff) return { maxRtDays: 2, plannedRtDays: 0, takenRtDays: 0 };
 
+   
     return {
       maxRtDays: 2, 
       plannedRtDays: staff.plannedRtDays,
@@ -33,8 +38,7 @@ function RtDays() {
     <li>
     </li>
     <li>
-  
-    </li>
+   </li>
     <li>
     </li>
     <li></li>
@@ -42,7 +46,7 @@ function RtDays() {
   </ul>
 </div>
 <div>
-       <button id="calender-button" onClick={handleOpenCalendar}>Kalender öffnen</button>
+       <button id="calender-button" onClick={onOpenCalendar}>Kalender öffnen</button>
      </div>
     </div>
 
@@ -50,4 +54,4 @@ function RtDays() {
   );
 }
 
-export default RtDays;
+export default RtDays; 
