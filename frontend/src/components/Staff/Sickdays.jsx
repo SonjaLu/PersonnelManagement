@@ -5,7 +5,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import './SickDays.css';
 import { useStaff } from './StaffProvider.jsx';
 
-function SickDays() {
+function SickDays({ onOpenCalendar, staffname }) {
   const { staffName } = useParams();
   const navigate = useNavigate();
   const { staffList, setStaffList } = useStaff();
@@ -27,15 +27,16 @@ function SickDays() {
       staff.name === staffName ? { ...staff, sickDays: sickDays } : staff
     );
     setStaffList(updatedList);
-    navigate('/selectstaff'); 
+    navigate('/staffselector'); 
   };
 
   return (
     <>
-    <h2 className="sickdays-headline">Krankheitstage<br></br> für {staffName}</h2>
     <div className="sickdays-wrapper">
-       
-    <div className="sickdays-container">
+    <h2 className="sickdays-headline">Krankheitstage<br></br> für {staffName}</h2>
+    
+    <div className="sickdays-container"> 
+    
       
       <input className="sickdays-input"
         type="number"
@@ -51,17 +52,17 @@ function SickDays() {
     <div className="tree"></div>
     <div className="tree"></div>
     <div className="rock"></div>
-    <div class="truck-wrapper">
-    <div class="truck"></div>
+    <div className="truck-wrapper">
+    <div className="truck"></div>
     <div className="wheels"></div>
-    <div class="red-cross"></div>
+    <div className="red-cross"></div>
     
     </div>
   </div>
-  </div>  
-  {/* <div>
-       <button id="calender-button" onClick={handleOpenCalendar}>Kalender öffnen</button>
-     </div> */}
+  </div> 
+  <div id="calender-button-container">
+ <button id="calender-button" onClick={onOpenCalendar}>Kalender öffnen</button>
+ </div>  
   </>
   );
 }

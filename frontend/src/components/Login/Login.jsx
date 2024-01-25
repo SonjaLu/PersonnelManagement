@@ -101,7 +101,7 @@ function Login() {
 
         if (users[username] && users[username] === password) {
             localStorage.setItem('user', username);
-            navigate('/selectstaff');
+            navigate('/staffselector');
         } else {
             alert('Ungültiger Benutzername oder Passwort');
         }

@@ -154,6 +154,8 @@ return (
   <button id="sick-btn"className="legend-item sickness-day"onClick={() => setCurrentEventType('sickness')}>Krankheitstag</button>
   <button id="vacation-btn"className="legend-item vacation-day"onClick={() => setCurrentEventType('vacation')}>Urlaubstag</button>
   <button id="rt-btn"className="legend-item rt-day"onClick={() => setCurrentEventType('rt')}>RT-Tag</button>
+  <button id="save-all-btn" onClick={saveSelection}>Nochmal speichern !</button>
+<button id="close-btn" onClick={() => window.close()}>Zurück</button>
 </div>
    </div>  
   </>

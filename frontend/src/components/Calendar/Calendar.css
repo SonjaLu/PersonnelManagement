@@ -65,9 +65,10 @@ font-size: 20px;
     color: darkgray;
   }
    
-  #sick-btn, #vacation-btn, #rt-btn {
+  #sick-btn, #vacation-btn, #rt-btn, #save-all-btn, #close-btn {
     background-color: transparent;
     box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.75);
+    color: darkgray;
   }
   .calendar-legend .sickness-day:before {
     content: ' ';

@@ -1,15 +1,12 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
-import './Vacation.css';
 import { useContext } from 'react';
-
+import './Vacation.css';
 import { StaffContext } from './StaffProvider.jsx';
 import wavesGif from '../../assets/waves.gif';
 
-function Vacation() {
-    const { staffName } = useParams();
+function Vacation({ onOpenCalendar, staffName}) {
+   
     const { staffList } = useContext(StaffContext);
-
+   
   const getVacationData = () => {
     const staff = staffList.find(s => s.name === staffName);
     if (!staff) return { vacationEntitlement: 0, vacationTaken: 0, vacationPlanned: 0, remainingVacation: 0 };
@@ -38,14 +35,15 @@ function Vacation() {
       <p>Geplanter Urlaub: {vacationData.vacationPlanned} Tage</p>
       <p>Resturlaub: {vacationData.remainingVacation} Tage</p>
       </div>
-      {/* Kalenderkomponente hier einfügen */}
+     
+      <div id="calender-button-container">
+       <button id="calender-button" onClick={onOpenCalendar}>Kalender öffnen</button>
+     </div>
     </div>
     );
  };
   
-    //    <div>
-    //    <button id="calender-button" onClick={handleOpenCalendar}>Kalender öffnen</button>
-    //  </div>
+    
 
 
 export default Vacation;

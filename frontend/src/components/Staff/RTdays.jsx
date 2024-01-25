@@ -6,7 +6,7 @@ import { useContext } from 'react';
 
 
 
-function RtDays({ onOpenCalendar}) {
+function RtDays({ onOpenCalendar, staffname}) {
     const { staffName } = useParams();
     const { staffList } = useContext(StaffContext);
 
@@ -45,7 +45,7 @@ function RtDays({ onOpenCalendar}) {
     <li></li>
   </ul>
 </div>
-<div>
+<div id="calender-button-container">
        <button id="calender-button" onClick={onOpenCalendar}>Kalender öffnen</button>
      </div>
     </div>
