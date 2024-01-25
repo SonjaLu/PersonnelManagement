@@ -6,9 +6,21 @@ import { StaffContext } from './StaffProvider.jsx';
 
 function WorkflowStaff() {
   const { staffName } = useParams();
-  const navigate = useNavigate();
   const { staffList } = useContext(StaffContext);
   const [sickDays, setSickDays] = useState(0);
+
+  const navigate = useNavigate();
+  const handleNavigateToSickDays = () => {
+        navigate(`/details/${staffName}/sick`);
+};
+
+const handleNavigateToRtDays = () => {
+        navigate(`/details/${staffName}/rt`);
+};
+
+const handleNavigateToVacation = () => {
+  navigate(`/details/${staffName}/vacation`);
+};
 
   useEffect(() => {
     const staff = staffList.find(staff => staff.name === staffName);
@@ -17,9 +29,10 @@ function WorkflowStaff() {
     }
   }, [staffName, staffList]);
 
-  const handleNavigation = (path) => {
-    navigate(`${path}/${staffName}`);
+  const handleNavigation = (type) => {
+    navigate(`/details/${staffName}/${type}`);
 };
+
   return (
     <div className="bodylike">
     <div>
@@ -28,10 +41,10 @@ function WorkflowStaff() {
     
 
     <div className="container">
-        <div className="cardbox" style={{ '--i': '0' }} onClick={() => handleNavigation('/vacation')}><div className="card-content" style={{ '--j': '1' }}><h2>Urlaubstage</h2></div></div>
-        <div className="cardbox" style={{ '--i': '1' }} onClick={() => handleNavigation('/sickdays')}><div className="card-content" style={{ '--j': '2' }}><h2>Krankentage</h2>
+        <div className="cardbox" style={{ '--i': '0' }} onClick={handleNavigateToVacation}><div className="card-content" style={{ '--j': '1' }}><h2>Urlaubstage</h2></div></div>
+        <div className="cardbox" style={{ '--i': '1' }} onClick={handleNavigateToSickDays}><div className="card-content" style={{ '--j': '2' }}><h2>Krankentage</h2>
         <p><br></br>{sickDays}</p></div></div>
-        <div className="cardbox" style={{ '--i': '2' }} onClick={() => handleNavigation('/rtdays')}><div className="card-content" style={{ '--j': '3' }}><h2>RT-Tage</h2></div></div>
+        <div className="cardbox" style={{ '--i': '2' }} onClick={handleNavigateToRtDays}><div className="card-content" style={{ '--j': '3' }}><h2>RT-Tage</h2></div></div>
         </div>
         </div>
         </div>

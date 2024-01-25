@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './SelectStaff.css';
+import './StaffSelector.css';
 import { useStaff } from './StaffProvider.jsx';
 import UpdateStaff from './UpdateStaff.jsx';
 
