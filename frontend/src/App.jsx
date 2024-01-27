@@ -17,6 +17,7 @@ import WorkflowStaff from './components/Staff/WorkflowStaff.jsx';
 import { StaffProvider } from './components/Staff/StaffProvider.jsx';
 import FullYearCalendar from './components/Calendar/Calendar.jsx';
 import ParentComponent from './components/Staff/ParentComponent.jsx';
+// import './App.scss';
 
 function Navigation() {
     const location = useLocation();

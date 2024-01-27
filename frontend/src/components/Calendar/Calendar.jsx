@@ -1,166 +1,130 @@
-import React, { useState } from 'react';
-import { Calendar, momentLocalizer } from 'react-big-calendar';
+import React, { useState, useContext, useParams } from 'react';
+import Calendar from 'react-calendar';
 import moment from 'moment';
 import 'moment/locale/de';
-import 'react-big-calendar/lib/css/react-big-calendar.css';
+import 'react-calendar/dist/Calendar.css';
 import './Calendar.css';
+import { StaffContext } from '../Staff/StaffProvider.jsx';
+import { useNavigate } from 'react-router-dom';
 
-const localizer = momentLocalizer(moment);
-
-moment.locale('de', {
+moment.updateLocale('de', {
   week: {
     dow: 1,
   },
 });
 
-const germanMessages = {
-  date: 'Datum',
-  time: 'Zeit',
-  event: 'Ereignis',
-  allDay: 'Ganztägig',
-  week: 'Woche',
-  work_week: 'Arbeitswoche',
-  day: 'Tag',
-  month: 'Monat',
-  previous: 'Zurück',
-  next: 'Nächster',
-  yesterday: 'Gestern',
-  tomorrow: 'Morgen',
-  today: 'Heute',
-  agenda: 'Agenda',
-
-  noEventsInRange: 'Es gibt keine Ereignisse in diesem Zeitraum.',
 
 
-  dayNamesShort: ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'],
-};
-const GermanWeekdayHeader = ({ date }) => {
-  const weekday = moment(date).format('dd'); 
-  return <span>{weekday}</span>;
-};
 const FullYearCalendar = () => {
-  const [view, setView] = useState('month');
-  const [selectedDays, setSelectedDays] = useState({}); // Speichert die ausgewählten Tage
-  const [currentEventType, setCurrentEventType] = useState('sickness'); // Standardmäßig auf 'Krankheitstag' gesetzt
-  const [date, setDate] = useState(new Date()); // Aktuelles Datum
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedEvents, setSelectedEvents] = useState([]);
+  const { staffList, setStaffList } = useContext(StaffContext);
+  const [currentEventType, setCurrentEventType] = useState('sickness');
+  const [markedDates, setMarkedDates] = useState([]);
 
-  const handleSelect = ({ start, end }) => {
-    const newEvent = {
-      start,
-      end,
-      title: currentEventType, // oder ein anderer Titel basierend auf der Art des Ereignisses
+  const currentYear = new Date().getFullYear();
+  const formatDay = (locale, date) => moment(date).format('dd');
+
+  const eventColors = {
+    sick: 'yellow',
+    rt: 'white',
+    vacation: 'green',
+  };
+
+  const tileClassName = ({ date }) => {
+    const formattedDate = moment(date).format('YYYY-MM-DD');
+    const foundDate = markedDates.find(d => d.date === formattedDate);
+    return foundDate ? `highlight-${foundDate.type}` : '';
+  };
+
+
+  const handleDaySelect = (value) => {
+    const formattedDate = moment(value).format('YYYY-MM-DD');
+    const newMarkedDate = {
+      date: formattedDate,
       type: currentEventType
     };
+    setMarkedDates([...markedDates, newMarkedDate]);
+  };
 
-    // Hinzufügen des neuen Events zum Array
-    setSelectedEvents([...selectedEvents, newEvent]);
-    // Prüfen, ob ein einzelner Tag oder ein Bereich ausgewählt wurde
-    if (moment(start).isSame(end, 'day')) {
-      // Einzelner Tag ausgewählt
-      const newSelectedDays = { ...selectedDays };
-      newSelectedDays[moment(start).format('YYYY-MM-DD')] = currentEventType;
-      setSelectedDays(newSelectedDays);
-    } else {
-      // Bereich ausgewählt
-      let newSelectedDays = { ...selectedDays };
-      let currentDay = moment(start);
   
-      while (currentDay.isSameOrBefore(end, 'day')) {
-        newSelectedDays[currentDay.format('YYYY-MM-DD')] = currentEventType;
-        currentDay.add(1, 'day');
+  const saveSelection = () => {
+    const updatedStaffList = staffList.map(staff => {
+      const staffEvents = selectedEvents.filter(event => event.type === currentEventType);
+      if (currentEventType === 'sick') {
+        staff.sickDays += staffEvents.length;
+      } else if (currentEventType === 'vacation') {
+        staff.vacationDays += staffEvents.length;
+      } else if (currentEventType === 'rt') {
+        staff.rtDays += staffEvents.length;
       }
-  
-      setSelectedDays(newSelectedDays);
-    }
+      console.log(`Saving selection for month: ${monthIndex}`);
+      return staff;
+    });
+    setStaffList(updatedStaffList);
+    localStorage.setItem('staffList', JSON.stringify(updatedStaffList));
+    setSelectedEvents([]);
   };
-  const handleViewChange = (newView) => {
-    setView(newView);
-  };
+  const { staffName } = useParams();
+  const navigate = useNavigate();
 
-  const handleNavigate = (newDate) => {
-    setDate(newDate);
-  };
-
- 
-const saveSelection = () => {
-  console.log(selectedDays);
-  // Hier die Logik zum Speichern der Daten implementieren
-};
-const events = [
-  { start: new Date(2024, 1, 5), end: new Date(2024, 1, 5), title: 'Krankheitstag', type: 'sickness' },
-  // Weitere Events...
-];
-const eventPropGetter = (event) => {
-  let newStyle = {};
-  switch (event.type) {
-    case 'sickness':
-      newStyle.backgroundColor = 'yellow';
-      break;
-    case 'vacation':
-      newStyle.backgroundColor = 'green';
-      break;
-    case 'rt':
-      newStyle.backgroundColor = 'white';
-      break;
-    default:
-      break;
-  }
-  return { style: newStyle };
+const closeWindow = () => {
+  navigate('/workflowstaff/${staffName}'); 
 };
 
-const renderCalendars = () => {
-  const months = [];
-  const currentDate = new Date();
-    const currentYear = currentDate.getFullYear();
+  const renderColorBox = (color) => (
+    <div style={{ width: '15px', height: '15px', backgroundColor: color, marginRight: '5px' }}></div>
+  );
 
-  for (let month = 0; month < 12; month++) {
-    const date = new Date(currentYear, month);
-    const monthName = moment(date).format('MMMM');
-    date.setMonth(month);
-    months.push(
+  const renderCalendars = () => {
+    return Array.from({ length: 12 }, (_, month) => (
+   
       <div className="single-calendar" key={month}>
-         <h3>{monthName}</h3>
-        <Calendar
-          localizer={localizer}
-          events={events}
-        onSelectEvent={event => handleDaySelect(event.start, event.type)}
-        eventPropGetter={eventPropGetter}
-          date={date}
-          view={view}
-          onView={handleViewChange}
-            onNavigate={handleNavigate}
-          toolbar={false}
-          onSelectSlot={handleSelect}
-          messages={germanMessages}
-          components={{
-            dayHeader: GermanWeekdayHeader
-          }}
-        />
-         <button id="save-btn" onClick={saveSelection}>Auswahl speichern</button>
-      </div>
-    );
-  }
-  return months;
+      <h3>{moment(new Date(currentYear, month)).format('MMMM')}</h3>
+      <Calendar
+        onChange={value => setSelectedDate(value)}
+        value={selectedDate}
+        onClickDay={handleDaySelect}
+        tileClassName={tileClassName}
+        view='month'
+      />
+      
+    </div>
+  ));
 };
 
-return (
-  <>
-  <h2>{new Date().getFullYear()}</h2>
-  <div className="calendar-container">
-    {renderCalendars()}
+  return (
   
-    <div className="calendar-legend">
-  <button id="sick-btn"className="legend-item sickness-day"onClick={() => setCurrentEventType('sickness')}>Krankheitstag</button>
-  <button id="vacation-btn"className="legend-item vacation-day"onClick={() => setCurrentEventType('vacation')}>Urlaubstag</button>
-  <button id="rt-btn"className="legend-item rt-day"onClick={() => setCurrentEventType('rt')}>RT-Tag</button>
-  <button id="save-all-btn" onClick={saveSelection}>Nochmal speichern !</button>
-<button id="close-btn" onClick={() => window.close()}>Zurück</button>
-</div>
-   </div>  
-  </>
-);
+    <div className="calender-wrapper">
+      <h2>{currentYear}</h2>
+      <div className="calendar-container">
+        {renderCalendars()}
+      </div>
+      <div className="calendar-legend">
+      <button id="sick-btn"className="legend-item sickness-day" onClick={() => setCurrentEventType('sick')}>
+          {renderColorBox(eventColors.sick)}
+          Krankheitstag
+        </button>
+        <button id="vacation-btn" className="legend-item vacation-day" onClick={() => setCurrentEventType('vacation')}>
+          {renderColorBox(eventColors.vacation)}
+          Urlaubstag
+        </button>
+        <button id="rt-btn" className="legend-item rt-day" onClick={() => setCurrentEventType('rt')}>
+          {renderColorBox(eventColors.rt)}
+          RT-Tag
+        </button>
+        <button id="save-all-btn" onClick={saveSelection}>Alle speichern</button>
+        <button onClick={closeWindow} className="back-btn">
+          {renderColorBox('transparent')}
+          Zurück
+        </button>
+      </div>
+    </div>
+  );
 };
+
+  
+
 
 export default FullYearCalendar;
 
