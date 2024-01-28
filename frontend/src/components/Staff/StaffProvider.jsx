@@ -14,8 +14,8 @@ export const StaffProvider = ({ children }) => {
 
    
     const initialStaffList = [
-      { name: 'Kunigunde', vacationEntitlement: 30, vacationTaken: 20, vacationPlanned: 23, sickDays: 2, rtDays: 2, plannedRtDays: 2, takenRtDays: 1 },
-      { name: 'Hildegard', vacationEntitlement: 30, vacationTaken: 16, vacationPlanned: 20, sickDays: 20, rtDays: 2, plannedRtDays: 1, takenRtDays: 1 },
+      { name: 'Kunigunde', vacationEntitlement: 30, vacationTaken: 20, vacationPlanned: 23, sickDays: 2, rtDays: 2, plannedRtDays: 2, takenRtDays: 1, sickDaysDates: [], vacationDaysDates: [], rtDaysDates: []},
+      { name: 'Hildegard', vacationEntitlement: 30, vacationTaken: 16, vacationPlanned: 20, sickDays: 20, rtDays: 2, plannedRtDays: 1, takenRtDays: 1, sickDaysDates: [], vacationDaysDates: [], rtDaysDates: []},
     ];
     
     const combinedStaffList = [...new Set([...savedStaffList, ...initialStaffList].map(JSON.stringify))].map(JSON.parse);

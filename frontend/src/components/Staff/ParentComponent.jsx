@@ -1,31 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import RtDays from './RTdays.jsx'; 
-import SickDays from './Sickdays.jsx';
-import Vacation from './Vacation.jsx';
+import { useStaff } from './StaffProvider.jsx';
 import FullYearCalendar from '../Calendar/Calendar.jsx'; 
 
-
 function ParentComponent() {
-  const { staffName, type } = useParams();
-   
-    const handleOpenCalendar = () => {
-      window.open(`/calendar/${staffName}`, '_blank');
-    };
+  const { staffName } = useParams();
+  const { staffList } = useStaff();
+  const [markedDates, setMarkedDates] = useState([]);
 
-    let ComponentToShow;
-    if (type === 'sick') {
-        ComponentToShow = <SickDays staffName={staffName} onOpenCalendar={handleOpenCalendar} type={type} />;
-    } else if (type === 'rt') {
-        ComponentToShow = <RtDays staffName={staffName} onOpenCalendar={handleOpenCalendar} type={type} />;
-    } else if (type === 'vacation') {
-    ComponentToShow = <Vacation staffName={staffName} onOpenCalendar={handleOpenCalendar} type={type} />;
+  useEffect(() => {
+    const selectedStaff = staffList.find(staff => staff.name === staffName);
+    if (selectedStaff) {
+      const loadedMarkedDates = [];
+
+      selectedStaff.sickDaysDates?.forEach(date => {
+        loadedMarkedDates.push({ date, type: 'sick' });
+      });
+
+      selectedStaff.vacationDaysDates?.forEach(date => {
+        loadedMarkedDates.push({ date, type: 'vacation' });
+      });
+
+      selectedStaff.rtDaysDates?.forEach(date => {
+        loadedMarkedDates.push({ date, type: 'rt' });
+      });
+
+      setMarkedDates(loadedMarkedDates);
     }
+  }, [staffName, staffList]);
 
-    return (
-      <div>
-        {ComponentToShow}
+  return (
+    <div>
+      <FullYearCalendar staffName={staffName} markedDates={markedDates} />
     </div>
-);
+  );
 }
-    export default ParentComponent;
+
+export default ParentComponent;

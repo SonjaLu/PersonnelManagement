@@ -18,7 +18,10 @@ function StaffSelector() {
     sickDays: '',
     rtDays: '',
     plannedRtDays: '',
-    takenRtDays: ''
+    takenRtDays: '',
+    sickDaysDates: [],
+    vacationDaysDates: [],
+    rtDaysDates: []
   });
 
   const navigate = useNavigate();
@@ -55,7 +58,10 @@ function StaffSelector() {
       sickDays: '',
       rtDays: '',
       plannedRtDays: '',
-      takenRtDays: ''
+      takenRtDays: '',
+      sickDaysDates: [],
+    vacationDaysDates: [],
+    rtDaysDates: []
     });
   };
 
@@ -65,7 +71,12 @@ function StaffSelector() {
     const isDataComplete = newStaffName.name && newStaffName.vacationEntitlement && newStaffName.vacationTaken && newStaffName.vacationPlanned && newStaffName.sickDays && newStaffName.rtDays && newStaffName.plannedRtDays && newStaffName.takenRtDays;
     
     if (!isNameExists && isDataComplete) {
-      setStaffList([...staffList, newStaffName]);
+      setStaffList([...staffList, {
+        ...newStaffName,
+        sickDaysDates: [],
+        vacationDaysDates: [],
+        rtDaysDates: []
+      }]);
       setNewStaffName({
         name: '',
         vacationEntitlement: '',
@@ -74,7 +85,10 @@ function StaffSelector() {
         sickDays: '',
         rtDays: '',
         plannedRtDays: '',
-        takenRtDays: ''
+        takenRtDays: '',
+        sickDaysDates: [],
+    vacationDaysDates: [],
+    rtDaysDates: []
       });
     } else {
       
@@ -82,24 +96,27 @@ function StaffSelector() {
     }
   };
 
-  const handleUpdateStaff = () => {
-    const updatedList = staffList.map(staff => 
-      staff.name === selectedStaff ? newStaffName : staff
-    );
-    setStaffList(updatedList);
-    setSelectedStaff('');
-    setNewStaffName({
-      name: '',
-      vacationEntitlement: '',
-      vacationTaken: '',
-      vacationPlanned: '',
-      sickDays: '',
-      rtDays: '',
-      plannedRtDays: '',
-      takenRtDays: ''
-    });
-    setIsEditMode(false);
-  };
+  // const handleUpdateStaff = () => {
+  //   const updatedList = staffList.map(staff => 
+  //     staff.name === selectedStaff ? newStaffName : staff
+  //   );
+  //   setStaffList(updatedList);
+  //   setSelectedStaff('');
+  //   setNewStaffName({
+  //     name: '',
+  //     vacationEntitlement: '',
+  //     vacationTaken: '',
+  //     vacationPlanned: '',
+  //     sickDays: '',
+  //     rtDays: '',
+  //     plannedRtDays: '',
+  //     takenRtDays: '',
+  //     sickDaysDates: [],
+  //   vacationDaysDates: [],
+  //   rtDaysDates: []
+  //   });
+  //   setIsEditMode(false);
+  // };
 
   const handleDeleteStaff = () => {
     if (selectedStaff && window.confirm(`Möchten Sie wirklich ${selectedStaff} löschen?`)) {
