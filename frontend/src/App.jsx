@@ -51,7 +51,7 @@ function App() {
                 <Route path="/quotes" element={<QuoteComponent />} />
                 <Route path="/staffselector" element={<StaffSelector />} />
                 <Route path="/workflowstaff/:staffName" element={<WorkflowStaff />} />
-    <Route path="/calendar" element={<FullYearCalendar />} />
+    <Route path="/calendar/:staffName" element={<FullYearCalendar />} />
      <Route path="/details/:staffName/:type" element={<ParentComponent />} />
             </Routes>
         </Router>

@@ -1,11 +1,11 @@
-import React, { useState, useContext, useParams } from 'react';
+import React, { useState, useContext } from 'react';
 import Calendar from 'react-calendar';
 import moment from 'moment';
 import 'moment/locale/de';
 import 'react-calendar/dist/Calendar.css';
 import './Calendar.css';
 import { StaffContext } from '../Staff/StaffProvider.jsx';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 moment.updateLocale('de', {
   week: {
@@ -69,7 +69,7 @@ const FullYearCalendar = () => {
   const navigate = useNavigate();
 
 const closeWindow = () => {
-  navigate('/workflowstaff/${staffName}'); 
+  navigate(`/workflowstaff/${staffName}`); 
 };
 
   const renderColorBox = (color) => (

@@ -10,7 +10,7 @@ function ParentComponent() {
   const { staffName, type } = useParams();
    
     const handleOpenCalendar = () => {
-      window.open('/calendar', '_blank');
+      window.open(`/calendar/${staffName}`, '_blank');
     };
 
     let ComponentToShow;

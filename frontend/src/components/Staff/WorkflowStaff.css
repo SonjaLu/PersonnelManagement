@@ -5,7 +5,7 @@
     text-align: center;
     color: pink;
     position: relative;
-    z-index: 2;
+    z-index: 10;
     top: -150px;
     display:flex;
     justify-content: center;
@@ -36,6 +36,21 @@ position: relative;
     background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(70,252,232,1) 12%, rgba(238,70,252,1) 32%, rgba(252,70,129,1) 35%);
     transition: 0.5s;
     clip-path: circle(300px at center);
+}
+
+.h2-display{
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    text-align: center;
+    color: pink;
+    position: relative;
+    z-index: 10;
+    top: -150px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+top: -100px;
 }
 
 .container {

@@ -41,10 +41,10 @@ const handleNavigateToVacation = () => {
     
 
     <div className="container">
-        <div className="cardbox" style={{ '--i': '0' }} onClick={handleNavigateToVacation}><div className="card-content" style={{ '--j': '1' }}><h2>Urlaubstage</h2></div></div>
-        <div className="cardbox" style={{ '--i': '1' }} onClick={handleNavigateToSickDays}><div className="card-content" style={{ '--j': '2' }}><h2>Krankentage</h2>
+        <div className="cardbox" style={{ '--i': '0' }} onClick={handleNavigateToVacation}><div className="card-content" style={{ '--j': '1' }}><h2 className="h2-display">Urlaubstage</h2></div></div>
+        <div className="cardbox" style={{ '--i': '1' }} onClick={handleNavigateToSickDays}><div className="card-content" style={{ '--j': '2' }}><h2 className="h2-display">Krankentage</h2>
         <p><br></br>{sickDays}</p></div></div>
-        <div className="cardbox" style={{ '--i': '2' }} onClick={handleNavigateToRtDays}><div className="card-content" style={{ '--j': '3' }}><h2>RT-Tage</h2></div></div>
+        <div className="cardbox" style={{ '--i': '2' }} onClick={handleNavigateToRtDays}><div className="card-content" style={{ '--j': '3' }}><h2 className="h2-display">RT-Tage</h2></div></div>
         </div>
         </div>
         </div>

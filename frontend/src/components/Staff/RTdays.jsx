@@ -6,8 +6,8 @@ import { useContext } from 'react';
 
 
 
-function RtDays({ onOpenCalendar, staffname}) {
-    const { staffName } = useParams();
+function RtDays({ onOpenCalendar, staffName}) {
+    
     const { staffList } = useContext(StaffContext);
 
 

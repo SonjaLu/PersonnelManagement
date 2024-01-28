@@ -5,8 +5,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import './SickDays.css';
 import { useStaff } from './StaffProvider.jsx';
 
-function SickDays({ onOpenCalendar, staffname }) {
-  const { staffName } = useParams();
+function SickDays({ onOpenCalendar, staffName }) {
+  
   const navigate = useNavigate();
   const { staffList, setStaffList } = useStaff();
   const [sickDays, setSickDays] = useState('');
