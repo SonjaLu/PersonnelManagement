@@ -42,7 +42,7 @@ const FullYearCalendar = () => {
   const [view, setView] = useState('month');
   const [selectedDays, setSelectedDays] = useState({}); // Speichert die ausgewählten Tage
   const [currentEventType, setCurrentEventType] = useState('sickness'); // Standardmäßig auf 'Krankheitstag' gesetzt
-  const [date, setDate] = useState(new Date()); // Aktuelles Datum
+  const [date, setDate] = useState(new Date()); 
   const [selectedEvents, setSelectedEvents] = useState([]);
 
   const handleSelect = ({ start, end }) => {
@@ -85,7 +85,7 @@ const FullYearCalendar = () => {
  
 const saveSelection = () => {
   console.log(selectedDays);
-  // Hier die Logik zum Speichern der Daten implementieren
+ 
 };
 const events = [
   { start: new Date(2024, 1, 5), end: new Date(2024, 1, 5), title: 'Krankheitstag', type: 'sickness' },
