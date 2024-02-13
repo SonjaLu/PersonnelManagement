@@ -34,10 +34,12 @@ const handleNavigateToVacation = () => {
 };
 
   return (
+    <>
     <div className="bodylike">
     <div>
     
-      <h2 className="headline">Workflow für {staffName}</h2>
+      <h2 className="headline">Workflow für {staffName}
+      </h2>
     
 
     <div className="container">
@@ -48,6 +50,12 @@ const handleNavigateToVacation = () => {
         </div>
         </div>
         </div>
+        <div className="navigation-arrow">
+        <button onClick={() => navigate('/staffselector')} className="glow-on-hover">
+          &#x2190; Auswahlliste
+        </button>
+      </div>
+      </>
   );
 }
 

@@ -17,13 +17,16 @@ moment.updateLocale('de', {
 const FullYearCalendar = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedEvents, setSelectedEvents] = useState([]);
-  const { staffList, setStaffList } = useContext(StaffContext);
+  const { staffList, setStaffList, calculateValidVacationDays  } = useContext(StaffContext);
   const [currentEventType, setCurrentEventType] = useState('sickness');
   const [markedDates, setMarkedDates] = useState([]);
   const [selectedMonth, setSelectedMonth] = useState(null);
   const currentYear = new Date().getFullYear();
-  
   const { staffName } = useParams();
+  const [availableVacationDays, setAvailableVacationDays] = useState(0);
+  const [showPopup, setShowPopup] = useState(false);   
+  const [remainingDaysForSelection, setRemainingDaysForSelection] = useState(0); // Verbleibende Tage, die noch ausgewählt werden können
+  
 
   const eventColors = {
     sick: 'yellow',
@@ -31,18 +34,28 @@ const FullYearCalendar = () => {
     vacation: 'green',
   };
 
-  const tileClassName = ({ date }) => {
-    const formattedDate = moment(date).format('YYYY-MM-DD');
-    const foundDate = markedDates.find(d => d.date === formattedDate);
-    return foundDate ? `highlight-${foundDate.type}` : '';
-  };
+
+
+
+  useEffect(() => {
+    const loadedStaffList = JSON.parse(localStorage.getItem('staffList')) || [];
+    if (loadedStaffList.length > 0) {
+      setStaffList(loadedStaffList);
+    }
+  }, []);
 
   useEffect(() => {
     const selectedStaff = staffList.find(staff => staff.name === staffName);
     if (selectedStaff) {
       const loadedMarkedDates = [];
-      
-      selectedStaff.sickDaysDates.forEach(date => {
+      const validDays = calculateValidVacationDays(staffName);
+      setAvailableVacationDays(validDays);
+  
+      selectedStaff.sickDaysDates.forEach(date => loadedMarkedDates.push({ date, type: 'sick' }));
+      selectedStaff.vacationDaysDates.forEach(date => loadedMarkedDates.push({ date, type: 'vacation' }));
+      selectedStaff.rtDaysDates.forEach(date => loadedMarkedDates.push({ date, type: 'rt' }));
+  
+        selectedStaff.sickDaysDates.forEach(date => {
         loadedMarkedDates.push({ date, type: 'sick' });
       });
   
@@ -56,16 +69,32 @@ const FullYearCalendar = () => {
 
       setMarkedDates(loadedMarkedDates);
     }
-  }, [staffName, staffList]);
+  }, [staffName, staffList, calculateValidVacationDays]);
 
 
   const handleDaySelect = (value) => {
-    const formattedDate = moment(value).format('YYYY-MM-DD');
-    const newMarkedDate = {
-      date: formattedDate,
-      type: currentEventType
-    };
+    
+    if (currentEventType === 'vacation' && availableVacationDays <= 0) {
+      alert('Keine verfügbaren Urlaubstage mehr');
+      return;  
+    }
+  
+    setShowPopup(true);
+  setRemainingDaysForSelection(availableVacationDays - 1);
+
+  const formattedDate = moment(value).format('YYYY-MM-DD');
+    const newMarkedDate = { date: formattedDate, type: currentEventType };
     setMarkedDates([...markedDates, newMarkedDate]);
+  
+    if (currentEventType === 'vacation') {
+      setAvailableVacationDays(availableVacationDays - 1);
+    }
+  };
+
+  const tileClassName = ({ date }) => {
+    const formattedDate = moment(date).format('YYYY-MM-DD');
+    const foundDate = markedDates.find(d => d.date === formattedDate);
+    return foundDate ? `highlight-${foundDate.type}` : '';
   };
 
   const renderColorBox = (color) => (
@@ -80,6 +109,7 @@ const FullYearCalendar = () => {
         let sickDays = staff.sickDays;
         let plannedRtDays = staff.plannedRtDays;
         let takenRtDays = staff.takenRtDays;
+        
   
         markedDates.forEach(mark => {
           const markDate = new Date(mark.date);
@@ -91,7 +121,7 @@ const FullYearCalendar = () => {
             } else {
               vacationPlanned++;
             }
-          } else if (mark.type === 'sick') {
+          } else  if (mark.type === 'sick' && !staff.sickDaysDates.includes(mark.date)) {
             sickDays++;
           } else if (mark.type === 'rt') {
             if (markDate < today) {
@@ -173,39 +203,52 @@ const renderMonthCalendar = () => {
 );
 };
 
-  const renderCalendars = () => {
-    return Array.from({ length: 12 }, (_, month) => (
-    <div className="single-calendar" key={month} onClick={() => openMonthCalendar(month)}>
-      <h3>{moment(new Date(currentYear, month)).format('MMMM')}</h3>
-      <Calendar
-          value={new Date(currentYear, month, 1)}
-          tileClassName={tileClassName}
-          view='month'
-          />
-     </div>
-      ));
+const renderCalendars = () => {
+  return Array.from({ length: 12 }, (_, month) => (
+  <div className="single-calendar" key={month} onClick={() => openMonthCalendar(month)}>
+    <h3>{moment(new Date(currentYear, month)).format('MMMM')}</h3>
+    <Calendar
+        value={new Date(currentYear, month, 1)}
+        tileClassName={tileClassName}
+        view='month'
+        />
+   </div>
+    ));
 };
 
-  return (
-  <div className="calender-wrapper">
-       {selectedMonth === null && <h2>{currentYear} - {staffName}</h2>}
-      <div className="calendar-container">
+
+const Popup = ({ onClose, remainingDays }) => (
+  <div className="popup-overlay-cal">
+    <div className="popup-content-cal">
+      <h2>Verfügbare Urlaubstage</h2>
+      <p>Sie haben noch {remainingDays} Urlaubstage.</p>
+      <button onClick={onClose}>Schließen</button>
+    </div>
+  </div>
+);
+return (
+  <div className="calendar-wrapper"> {/* Stellen Sie sicher, dass die Klasse konsistent benannt ist */}
+    {selectedMonth === null && <h2>{currentYear} - {staffName}</h2>}
+    <div className="calendar-container">
       {selectedMonth === null ? renderCalendars() : renderMonthCalendar()}
-        
-      </div>
-      {selectedMonth === null && (
+    </div>
+    {showPopup && (
+      <Popup
+        remainingDays={remainingDaysForSelection}
+        onClose={() => setShowPopup(false)}
+      />
+    )}
+    {selectedMonth === null && (
       <div className="calendar-legend">
-      
         <button id="save-all-btn" onClick={saveSelection}>Alle speichern</button>
         <button onClick={closeWindow} className="back-btn">
           {renderColorBox('transparent')}
           Zurück
         </button>
       </div>
-      )}
-    </div>
-  );
-};
+    )}
+  </div>
+);}
 
   
 
