@@ -1,166 +1,270 @@
-import React, { useState } from 'react';
-import { Calendar, momentLocalizer } from 'react-big-calendar';
+import React, { useState, useContext, useEffect } from 'react';
+import Calendar from 'react-calendar';
 import moment from 'moment';
 import 'moment/locale/de';
-import 'react-big-calendar/lib/css/react-big-calendar.css';
+import 'react-calendar/dist/Calendar.css';
 import './Calendar.css';
+import { StaffContext } from '../Staff/StaffProvider.jsx';
+import { useNavigate, useParams } from 'react-router-dom';
 
-const localizer = momentLocalizer(moment);
-
-moment.locale('de', {
+moment.updateLocale('de', {
   week: {
     dow: 1,
   },
 });
 
-const germanMessages = {
-  date: 'Datum',
-  time: 'Zeit',
-  event: 'Ereignis',
-  allDay: 'Ganztägig',
-  week: 'Woche',
-  work_week: 'Arbeitswoche',
-  day: 'Tag',
-  month: 'Monat',
-  previous: 'Zurück',
-  next: 'Nächster',
-  yesterday: 'Gestern',
-  tomorrow: 'Morgen',
-  today: 'Heute',
-  agenda: 'Agenda',
 
-  noEventsInRange: 'Es gibt keine Ereignisse in diesem Zeitraum.',
-
-
-  dayNamesShort: ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'],
-};
-const GermanWeekdayHeader = ({ date }) => {
-  const weekday = moment(date).format('dd'); 
-  return <span>{weekday}</span>;
-};
 const FullYearCalendar = () => {
+<<<<<<< HEAD
   const [view, setView] = useState('month');
   const [selectedDays, setSelectedDays] = useState({}); // Speichert die ausgewählten Tage
   const [currentEventType, setCurrentEventType] = useState('sickness'); // Standardmäßig auf 'Krankheitstag' gesetzt
   const [date, setDate] = useState(new Date()); 
+=======
+  const [selectedDate, setSelectedDate] = useState(new Date());
+>>>>>>> e318d4b17eb65f9ddae9a49f3be31597e0fa143a
   const [selectedEvents, setSelectedEvents] = useState([]);
-
-  const handleSelect = ({ start, end }) => {
-    const newEvent = {
-      start,
-      end,
-      title: currentEventType, // oder ein anderer Titel basierend auf der Art des Ereignisses
-      type: currentEventType
-    };
-
-    // Hinzufügen des neuen Events zum Array
-    setSelectedEvents([...selectedEvents, newEvent]);
-    // Prüfen, ob ein einzelner Tag oder ein Bereich ausgewählt wurde
-    if (moment(start).isSame(end, 'day')) {
-      // Einzelner Tag ausgewählt
-      const newSelectedDays = { ...selectedDays };
-      newSelectedDays[moment(start).format('YYYY-MM-DD')] = currentEventType;
-      setSelectedDays(newSelectedDays);
-    } else {
-      // Bereich ausgewählt
-      let newSelectedDays = { ...selectedDays };
-      let currentDay = moment(start);
+  const { staffList, setStaffList, calculateValidVacationDays  } = useContext(StaffContext);
+  const [currentEventType, setCurrentEventType] = useState('sickness');
+  const [markedDates, setMarkedDates] = useState([]);
+  const [selectedMonth, setSelectedMonth] = useState(null);
+  const currentYear = new Date().getFullYear();
+  const { staffName } = useParams();
+  const [availableVacationDays, setAvailableVacationDays] = useState(0);
+  const [showPopup, setShowPopup] = useState(false);   
+  const [remainingDaysForSelection, setRemainingDaysForSelection] = useState(0); // Verbleibende Tage, die noch ausgewählt werden können
   
-      while (currentDay.isSameOrBefore(end, 'day')) {
-        newSelectedDays[currentDay.format('YYYY-MM-DD')] = currentEventType;
-        currentDay.add(1, 'day');
-      }
+
+  const eventColors = {
+    sick: 'yellow',
+    rt: 'white',
+    vacation: 'green',
+  };
+
+
+
+
+  useEffect(() => {
+    const loadedStaffList = JSON.parse(localStorage.getItem('staffList')) || [];
+    if (loadedStaffList.length > 0) {
+      setStaffList(loadedStaffList);
+    }
+  }, []);
+
+  useEffect(() => {
+    const selectedStaff = staffList.find(staff => staff.name === staffName);
+    if (selectedStaff) {
+      const loadedMarkedDates = [];
+      const validDays = calculateValidVacationDays(staffName);
+      setAvailableVacationDays(validDays);
   
-      setSelectedDays(newSelectedDays);
+      selectedStaff.sickDaysDates.forEach(date => loadedMarkedDates.push({ date, type: 'sick' }));
+      selectedStaff.vacationDaysDates.forEach(date => loadedMarkedDates.push({ date, type: 'vacation' }));
+      selectedStaff.rtDaysDates.forEach(date => loadedMarkedDates.push({ date, type: 'rt' }));
+  
+        selectedStaff.sickDaysDates.forEach(date => {
+        loadedMarkedDates.push({ date, type: 'sick' });
+      });
+  
+      selectedStaff.vacationDaysDates.forEach(date => {
+        loadedMarkedDates.push({ date, type: 'vacation' });
+      });
+  
+      selectedStaff.rtDaysDates.forEach(date => {
+        loadedMarkedDates.push({ date, type: 'rt' });
+      });
+
+      setMarkedDates(loadedMarkedDates);
+    }
+  }, [staffName, staffList, calculateValidVacationDays]);
+
+
+  const handleDaySelect = (value) => {
+    
+    if (currentEventType === 'vacation' && availableVacationDays <= 0) {
+      alert('Keine verfügbaren Urlaubstage mehr');
+      return;  
+    }
+  
+    setShowPopup(true);
+  setRemainingDaysForSelection(availableVacationDays - 1);
+
+  const formattedDate = moment(value).format('YYYY-MM-DD');
+    const newMarkedDate = { date: formattedDate, type: currentEventType };
+    setMarkedDates([...markedDates, newMarkedDate]);
+  
+    if (currentEventType === 'vacation') {
+      setAvailableVacationDays(availableVacationDays - 1);
     }
   };
-  const handleViewChange = (newView) => {
-    setView(newView);
+
+  const tileClassName = ({ date }) => {
+    const formattedDate = moment(date).format('YYYY-MM-DD');
+    const foundDate = markedDates.find(d => d.date === formattedDate);
+    return foundDate ? `highlight-${foundDate.type}` : '';
   };
 
-  const handleNavigate = (newDate) => {
-    setDate(newDate);
+  const renderColorBox = (color) => (
+    <div style={{ width: '15px', height: '15px', backgroundColor: color, marginRight: '5px' }}></div>
+  );
+
+  const saveSelection = () => {
+    const updatedStaffList = staffList.map(staff => {
+      if (staff.name === staffName) {
+        let vacationTaken = staff.vacationTaken;
+        let vacationPlanned = staff.vacationPlanned;
+        let sickDays = staff.sickDays;
+        let plannedRtDays = staff.plannedRtDays;
+        let takenRtDays = staff.takenRtDays;
+        
+  
+        markedDates.forEach(mark => {
+          const markDate = new Date(mark.date);
+          const today = new Date();
+  
+          if (mark.type === 'vacation') {
+            if (markDate < today) {
+              vacationTaken++;
+            } else {
+              vacationPlanned++;
+            }
+          } else  if (mark.type === 'sick' && !staff.sickDaysDates.includes(mark.date)) {
+            sickDays++;
+          } else if (mark.type === 'rt') {
+            if (markDate < today) {
+              takenRtDays++;
+            } else {
+              plannedRtDays++;
+            }
+          }
+        });
+  
+        return {
+          ...staff,
+          vacationTaken,
+          vacationPlanned,
+          sickDays,
+          plannedRtDays,
+          takenRtDays,
+          sickDaysDates: markedDates.filter(mark => mark.type === 'sick').map(mark => mark.date),
+          vacationDaysDates: markedDates.filter(mark => mark.type === 'vacation').map(mark => mark.date),
+          rtDaysDates: markedDates.filter(mark => mark.type === 'rt').map(mark => mark.date)
+        };
+      }
+      return staff;
+    });
+  
+    setStaffList(updatedStaffList);
+    localStorage.setItem('staffList', JSON.stringify(updatedStaffList));
+    setSelectedEvents([]);
   };
+  
 
  
+<<<<<<< HEAD
 const saveSelection = () => {
   console.log(selectedDays);
  
+=======
+  const navigate = useNavigate();
+
+const closeWindow = () => {
+  navigate(`/workflowstaff/${staffName}`); 
+>>>>>>> e318d4b17eb65f9ddae9a49f3be31597e0fa143a
 };
-const events = [
-  { start: new Date(2024, 1, 5), end: new Date(2024, 1, 5), title: 'Krankheitstag', type: 'sickness' },
-  // Weitere Events...
-];
-const eventPropGetter = (event) => {
-  let newStyle = {};
-  switch (event.type) {
-    case 'sickness':
-      newStyle.backgroundColor = 'yellow';
-      break;
-    case 'vacation':
-      newStyle.backgroundColor = 'green';
-      break;
-    case 'rt':
-      newStyle.backgroundColor = 'white';
-      break;
-    default:
-      break;
-  }
-  return { style: newStyle };
+
+const openMonthCalendar = (month) => {
+  setSelectedMonth(month);
+};
+
+const renderMonthCalendar = () => {
+  if (selectedMonth === null) return null;
+
+  const monthStartDate = new Date(currentYear, selectedMonth, 1);
+
+  return (
+    <div>
+    <h3>{moment(monthStartDate).format('MMMM YYYY')} - {staffName}</h3>
+    <Calendar
+      onChange={value => handleDaySelect(value)}
+      value={selectedDate}
+      tileClassName={tileClassName}
+      view='month'
+      activeStartDate={monthStartDate}
+      showNeighboringMonth={false} 
+      />
+    <div className="calendar-legend">
+      <button id="sick-btn"className="legend-item sickness-day" onClick={() => setCurrentEventType('sick')}>
+          {renderColorBox(eventColors.sick)}
+          Krankheitstag
+        </button>
+        <button id="vacation-btn" className="legend-item vacation-day" onClick={() => setCurrentEventType('vacation')}>
+          {renderColorBox(eventColors.vacation)}
+          Urlaubstag
+        </button>
+        <button id="rt-btn" className="legend-item rt-day" onClick={() => setCurrentEventType('rt')}>
+          {renderColorBox(eventColors.rt)}
+          RT-Tag
+        </button>
+        <button id="save-all-btn" onClick={saveSelection}>Alle speichern</button>
+        <button onClick={() => setSelectedMonth(null)} className="back-btn">
+          {renderColorBox('transparent')}
+          Zurück zur Jahresansicht
+        </button>
+  </div>
+  </div>
+);
 };
 
 const renderCalendars = () => {
-  const months = [];
-  const currentDate = new Date();
-    const currentYear = currentDate.getFullYear();
-
-  for (let month = 0; month < 12; month++) {
-    const date = new Date(currentYear, month);
-    const monthName = moment(date).format('MMMM');
-    date.setMonth(month);
-    months.push(
-      <div className="single-calendar" key={month}>
-         <h3>{monthName}</h3>
-        <Calendar
-          localizer={localizer}
-          events={events}
-        onSelectEvent={event => handleDaySelect(event.start, event.type)}
-        eventPropGetter={eventPropGetter}
-          date={date}
-          view={view}
-          onView={handleViewChange}
-            onNavigate={handleNavigate}
-          toolbar={false}
-          onSelectSlot={handleSelect}
-          messages={germanMessages}
-          components={{
-            dayHeader: GermanWeekdayHeader
-          }}
+  return Array.from({ length: 12 }, (_, month) => (
+  <div className="single-calendar" key={month} onClick={() => openMonthCalendar(month)}>
+    <h3>{moment(new Date(currentYear, month)).format('MMMM')}</h3>
+    <Calendar
+        value={new Date(currentYear, month, 1)}
+        tileClassName={tileClassName}
+        view='month'
         />
-         <button id="save-btn" onClick={saveSelection}>Auswahl speichern</button>
-      </div>
-    );
-  }
-  return months;
+   </div>
+    ));
 };
 
-return (
-  <>
-  <h2>{new Date().getFullYear()}</h2>
-  <div className="calendar-container">
-    {renderCalendars()}
-  
-    <div className="calendar-legend">
-  <button id="sick-btn"className="legend-item sickness-day"onClick={() => setCurrentEventType('sickness')}>Krankheitstag</button>
-  <button id="vacation-btn"className="legend-item vacation-day"onClick={() => setCurrentEventType('vacation')}>Urlaubstag</button>
-  <button id="rt-btn"className="legend-item rt-day"onClick={() => setCurrentEventType('rt')}>RT-Tag</button>
-  <button id="save-all-btn" onClick={saveSelection}>Nochmal speichern !</button>
-<button id="close-btn" onClick={() => window.close()}>Zurück</button>
-</div>
-   </div>  
-  </>
+
+const Popup = ({ onClose, remainingDays }) => (
+  <div className="popup-overlay-cal">
+    <div className="popup-content-cal">
+      <h2>Verfügbare Urlaubstage</h2>
+      <p>Sie haben noch {remainingDays} Urlaubstage.</p>
+      <button onClick={onClose}>Schließen</button>
+    </div>
+  </div>
 );
-};
+return (
+  <div className="calendar-wrapper"> {/* Stellen Sie sicher, dass die Klasse konsistent benannt ist */}
+    {selectedMonth === null && <h2>{currentYear} - {staffName}</h2>}
+    <div className="calendar-container">
+      {selectedMonth === null ? renderCalendars() : renderMonthCalendar()}
+    </div>
+    {showPopup && (
+      <Popup
+        remainingDays={remainingDaysForSelection}
+        onClose={() => setShowPopup(false)}
+      />
+    )}
+    {selectedMonth === null && (
+      <div className="calendar-legend">
+        <button id="save-all-btn" onClick={saveSelection}>Alle speichern</button>
+        <button onClick={closeWindow} className="back-btn">
+          {renderColorBox('transparent')}
+          Zurück
+        </button>
+      </div>
+    )}
+  </div>
+);}
+
+  
+
 
 export default FullYearCalendar;
 

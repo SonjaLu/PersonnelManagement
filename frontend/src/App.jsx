@@ -17,6 +17,7 @@ import WorkflowStaff from './components/Staff/WorkflowStaff.jsx';
 import { StaffProvider } from './components/Staff/StaffProvider.jsx';
 import FullYearCalendar from './components/Calendar/Calendar.jsx';
 import ParentComponent from './components/Staff/ParentComponent.jsx';
+// import './App.scss';
 
 function Navigation() {
     const location = useLocation();
@@ -50,7 +51,7 @@ function App() {
                 <Route path="/quotes" element={<QuoteComponent />} />
                 <Route path="/staffselector" element={<StaffSelector />} />
                 <Route path="/workflowstaff/:staffName" element={<WorkflowStaff />} />
-    <Route path="/calendar" element={<FullYearCalendar />} />
+    <Route path="/calendar/:staffName" element={<FullYearCalendar />} />
      <Route path="/details/:staffName/:type" element={<ParentComponent />} />
             </Routes>
         </Router>

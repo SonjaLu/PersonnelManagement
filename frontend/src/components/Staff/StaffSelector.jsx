@@ -5,11 +5,13 @@ import './StaffSelector.css';
 import { useStaff } from './StaffProvider.jsx';
 import UpdateStaff from './UpdateStaff.jsx';
 
+
 function StaffSelector() {
-  const { staffList, setStaffList } = useStaff();
+  const { staffList, setStaffList, calculateValidVacationDays } = useStaff();
   const [selectedStaff, setSelectedStaff] = useState('');
   const [isEditMode, setIsEditMode] = useState(false);
   const [showUpdatePopup, setShowUpdatePopup] = useState(false);
+  const { updateStaffAndCalendarData } = useStaff();
   const [newStaffName, setNewStaffName] = useState({
     name: '',
     vacationEntitlement: '',
@@ -18,7 +20,10 @@ function StaffSelector() {
     sickDays: '',
     rtDays: '',
     plannedRtDays: '',
-    takenRtDays: ''
+    takenRtDays: '',
+    sickDaysDates: [],
+    vacationDaysDates: [],
+    rtDaysDates: []
   });
 
   const navigate = useNavigate();
@@ -41,6 +46,9 @@ function StaffSelector() {
   }};
 
   const handleUpdateSave = (updatedData) => {
+    updateStaffAndCalendarData(updatedData);
+    const newAvailableDays = calculateValidVacationDays(updatedData.name);
+    setShowUpdatePopup(false);
     const updatedList = staffList.map(staff => 
       staff.name === selectedStaff ? updatedData : staff
     );
@@ -55,17 +63,30 @@ function StaffSelector() {
       sickDays: '',
       rtDays: '',
       plannedRtDays: '',
-      takenRtDays: ''
+      takenRtDays: '',
+      sickDaysDates: [],
+    vacationDaysDates: [],
+    rtDaysDates: []
     });
   };
 
+  const validVacationDays = selectedStaff ? calculateValidVacationDays(selectedStaff) : 0;
+  // const validateVacationDays = () => {
+  //   const { vacationEntitlement, vacationTaken, vacationPlanned } = newStaffName;
+  //   return parseInt(vacationEntitlement) >= (parseInt(vacationTaken) + parseInt(vacationPlanned));
+  // };
 
   const handleAddStaff = () => {
     const isNameExists = staffList.some(staff => staff.name === newStaffName.name);
     const isDataComplete = newStaffName.name && newStaffName.vacationEntitlement && newStaffName.vacationTaken && newStaffName.vacationPlanned && newStaffName.sickDays && newStaffName.rtDays && newStaffName.plannedRtDays && newStaffName.takenRtDays;
-    
-    if (!isNameExists && isDataComplete) {
-      setStaffList([...staffList, newStaffName]);
+    const isValidVacationDays = validateVacationDays();
+    if (!isNameExists && isDataComplete && isValidVacationDays) {
+      setStaffList([...staffList, {
+        ...newStaffName,
+        sickDaysDates: [],
+        vacationDaysDates: [],
+        rtDaysDates: []
+      }]);
       setNewStaffName({
         name: '',
         vacationEntitlement: '',
@@ -74,7 +95,10 @@ function StaffSelector() {
         sickDays: '',
         rtDays: '',
         plannedRtDays: '',
-        takenRtDays: ''
+        takenRtDays: '',
+        sickDaysDates: [],
+    vacationDaysDates: [],
+    rtDaysDates: []
       });
     } else {
       
@@ -82,24 +106,6 @@ function StaffSelector() {
     }
   };
 
-  const handleUpdateStaff = () => {
-    const updatedList = staffList.map(staff => 
-      staff.name === selectedStaff ? newStaffName : staff
-    );
-    setStaffList(updatedList);
-    setSelectedStaff('');
-    setNewStaffName({
-      name: '',
-      vacationEntitlement: '',
-      vacationTaken: '',
-      vacationPlanned: '',
-      sickDays: '',
-      rtDays: '',
-      plannedRtDays: '',
-      takenRtDays: ''
-    });
-    setIsEditMode(false);
-  };
 
   const handleDeleteStaff = () => {
     if (selectedStaff && window.confirm(`Möchten Sie wirklich ${selectedStaff} löschen?`)) {

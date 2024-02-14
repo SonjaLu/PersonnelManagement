@@ -1,121 +1,212 @@
+.calender-wrapper {
+  max-height: 100vh;
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+h2{
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  font-size: 30px;
+  color: white;
+}
 .calendar-container {
-    width: 90%;      
-    height: 70%;    
-    padding: 20px;  
-    flex-wrap: wrap;  
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
-    align-content: center;
-    display: flex;
-    
-  }
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: flex-start;
+  gap: 20px;
+  width: 100%;
+  margin-bottom: 10px;
+}
 
-  .single-calendar {
-    width: 30%;
-    height: 30%;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: stretch;
-    border-radius: 5%;
-    margin-bottom: 10px;
-    box-shadow: 7px 8px 5px 0px rgba(0,0,0,0.75);
+.single-calendar {
+  flex: 0 0 22%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 7px 8px 5px 0px rgba(0,0,0,0.75);
+  margin: 0.5%;
+  padding: 10px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
 
-  }
-
-  .single-calendar h3 {
-    text-align: center;
-    margin-top: 0;
-    padding: 4px;
-font-size: 20px;
-  }
-
-  .rbc-header {
-    font-size: 16px;
-    font-weight: bold;
-    color: white;
-  }
-
-  .rbc-month-view {
-    font-size: 16px;
-    font-weight: bold;
-    color: white;
-  }
-
-  .rbc-today {
-    background-color: pink !important;
-  }
-
-  .calendar-legend {
-    margin: 20px auto;
-    text-align: center;
-    width: 90%;
-   clear: both;
-   display: flex;
-   justify-content: space-evenly;
-   font-size: 20px;
-  }
-
-  .calendar-legend .legend-item {
-    display: inline-block;
-    margin-right: 10px;
-    color: darkgray;
-  }
-   
-  #sick-btn, #vacation-btn, #rt-btn, #save-all-btn, #close-btn {
-    background-color: transparent;
-    box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.75);
-    color: darkgray;
-  }
-  .calendar-legend .sickness-day:before {
-    content: ' ';
-    display: inline-block;
-    width: 15px;
-    height: 15px;
-    background-color: yellow;
-    margin-right: 5px;
-  }
+.single-calendar h3 {
+  text-align: center;
+  margin-top: 0;
   
-  .calendar-legend .vacation-day:before {
-    content: ' ';
-    display: inline-block;
-    width: 15px;
-    height: 15px;
-    background-color: green;
-    margin-right: 5px;
-  }
-  
-  .calendar-legend .rt-day:before {
-    content: ' ';
-    display: inline-block;
-    width: 15px;
-    height: 15px;
-    background-color: white;
-    margin-right: 5px;
-  }
+  font-size: 20px;
+  width: 100%;
+}
 
-  .rbc-off-range{
-    visibility: hidden;
-    background-color: #333333;
-  }
-  .rbc-off-range-bg{
-    
-    background-color: #333333;
-    
-  }
-  .rbc-calendar .rbc-month-view .rbc-row-bg {
-    border-radius: 0 0 8px 8px !important;
-  }
+.react-calendar__navigation {
+  display: none;
+}
 
-  .rbc-month-row {
-    text-align: center;
-    justify-content: center;
-    
-  }
+.react-calendar {
+  width: 100%;
+  background: #333333;
+  border-radius: 5%;
+}
 
-  #save-btn {
-    border-radius: 0 0 8px 8px !important;
-  }
+.react-calendar__viewContainer {
+  width: 100%;
+  background: #333333;
+  border-radius: 5%;
+}
+
+.react-calendar__month-view {
+  width: 100%;
+  background: #333333;
+}
+
+.react-calendar__month-view__days {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.react-calendar__month-view__weekdays,
+.react-calendar__month-view__days {
+  color: darkgray;
+}
+
+.react-calendar__month-view__weekdays__weekday {
+  text-align: center;
+  font-size: 12px;
+}
+
+.react-calendar__month-view__days__day--neighboringMonth {
+  visibility: hidden;
+}
+
+.react-calendar__month-view__days__day--weekend {
+  color: #ccc;
+}
+
+.react-calendar__tile--now {
+  background-color: pink !important;
+}
+
+.react-calendar__tile {
+  background: #333;
+  border-radius: 5px;
+  padding: 5px;
+  font-size: 0.85em;
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+}
+
+
+.calendar-legend {
+  margin: 10px auto;
+  text-align: center;
+  width: 90%;
+  display: flex;
+  justify-content: space-evenly;
+  font-size: 20px;
+}
+
+.calendar-legend .legend-item {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  color: darkgray;
+  border-radius: 0 0 8px 8px !important;
+}
+
+
+
+#sick-btn,
+#vacation-btn,
+#rt-btn {
+  background-color: transparent; 
+  box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.75);
+  border-radius: 0 0 8px 8px !important;
+}
+
+
+.calendar-legend .legend-item span {
+  color: darkgray;
+  background-color: transparent;  
+}
+
+
+
+.calendar-legend .legend-item:before {
+  content: '';
+  display: block;
+  width: 15px;
+  height: 15px;
+  /* background: inherit; */
+  margin-right: 5px;
+}
+
+.back-btn:before {
+  content: ' ';
+  display: block;
+  width: 15px;
+  height: 15px;
+  background-color: transparent; 
+  margin-right: 5px;
+}
+
+.back-btn {
+  background-color: transparent;
+  color: darkgray;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  border-radius: 0 0 8px 8px !important;
+  box-shadow:5px 5px 5px 0px rgba(0,0,0,0.75);
+}
+#save-all-btn {
+  background-color: transparent;
+  color: darkgray;
+  border-radius: 0 0 8px 8px !important;
+  box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.75);
+}
+
+.highlight-sick {
+  background-color: yellow;
+}
+
+.highlight-vacation {
+  background-color: green;
+}
+
+.highlight-rt {
+  background-color: white;
+}
+
+.popup-overlay-cal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 20%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.popup-overlay-cal p {
+  color: white;
+  font-size: 20px;
+  margin-bottom:10px;
+}
